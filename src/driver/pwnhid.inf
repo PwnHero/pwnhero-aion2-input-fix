@@ -1,0 +1,58 @@
+[Version]
+Signature   = "$Windows NT$"
+Class       = System
+ClassGuid   = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider    = %ManufacturerName%
+CatalogFile = pwnhid.cat
+DriverVer   = 11/27/2026,1.0.0.0
+PnpLockdown = 1
+
+[Manufacturer]
+%ManufacturerName% = Standard,NTamd64
+
+[Standard.NTamd64]
+%DeviceName% = PwnHid_Device, ROOT\PWNHID
+
+[SourceDisksNames]
+1 = %DiskName%,,,
+
+[SourceDisksFiles]
+pwnhid_umdf.dll = 1
+
+[DestinationDirs]
+PwnHid_CopyFiles = 12,UMDF
+
+[PwnHid_CopyFiles]
+pwnhid_umdf.dll
+
+[PwnHid_Device.NT]
+CopyFiles = PwnHid_CopyFiles
+Include   = wudfrd.inf
+Needs     = WUDFRD.NT
+
+[PwnHid_Device.NT.HW]
+AddReg = PwnHid_HW_AddReg
+
+[PwnHid_HW_AddReg]
+HKR,,"LowerFilters",0x00010000,"vhf"
+HKR,,VhfMode,0x00010001,0x1
+
+[PwnHid_Device.NT.Services]
+Include = wudfrd.inf
+Needs   = WUDFRD.NT.Services
+
+[PwnHid_Device.NT.Wdf]
+UmdfService        = pwnhid_umdf, PwnHid_Umdf_Install
+UmdfServiceOrder   = pwnhid_umdf
+UmdfHostProcessSharing = ProcessSharingDisabled
+UmdfKernelModeClientPolicy = AllowKernelModeClients
+UmdfFileObjectPolicy = AllowNullAndUnknownFileObjects
+
+[PwnHid_Umdf_Install]
+UmdfLibraryVersion = 2.15.0
+ServiceBinary      = %12%\UMDF\pwnhid_umdf.dll
+
+[Strings]
+ManufacturerName = "PwnHero"
+DeviceName       = "PwnHero Virtual HID (Aion 2 Fix)"
+DiskName         = "PwnHero Virtual HID Installation Disk"

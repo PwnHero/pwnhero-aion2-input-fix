@@ -1,0 +1,11 @@
+*.zip
+*.exe
+*.dll
+*.cat
+*.cer
+*.lib
+*.exp
+*.obj
+.wdk-cache/
+.obj-tmp/
+build/
